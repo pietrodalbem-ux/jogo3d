@@ -1,55 +1,30 @@
 import * as THREE from 'three';
 
-export function setupWorld(scene) {
-    // Luzes
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    dirLight.position.set(50, 100, 50);
-    dirLight.castShadow = true;
-    scene.add(dirLight);
-    scene.add(new THREE.AmbientLight(0x404040, 1.0));
+export const arenaSize = 60; 
 
-    // Chão
-    const floor = new THREE.Mesh(
-        new THREE.PlaneGeometry(500, 500),
-        new THREE.MeshStandardMaterial({ color: 0x2e8b57 })
-    );
+export function setupWorld(scene) {
+    // 1. Iluminação (Mais clara para podermos ver tudo)
+    const ambientLight = new THREE.AmbientLight(0x444455, 3.0); // Bem mais forte
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0x8888ff, 4, 100);
+    pointLight.position.set(0, 20, 0);
+    scene.add(pointLight);
+
+    // 2. Chão (Cinza escuro visível)
+    const floorGeo = new THREE.PlaneGeometry(arenaSize, arenaSize);
+    const floorMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.8 });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
     floor.rotation.x = -Math.PI / 2;
-    floor.receiveShadow = true;
     scene.add(floor);
 
-    // FUNÇÃO PARA CRIAR UMA ÁRVORE
-    const createTree = (x, z) => {
-        const group = new THREE.Group();
+    // 3. Paredes (Limites da Arena)
+    const wallGeo = new THREE.BoxGeometry(arenaSize, 20, 2);
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0x222222 }); // Um pouco mais escura que o chão
 
-        // Tronco
-        const trunk = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.5, 0.5, 4),
-            new THREE.MeshStandardMaterial({ color: 0x8b4513 })
-        );
-        trunk.position.y = 2;
-        trunk.castShadow = true;
-        group.add(trunk);
-
-        // Folhas (Copa)
-        const leaves = new THREE.Mesh(
-            new THREE.ConeGeometry(3, 6, 8),
-            new THREE.MeshStandardMaterial({ color: 0x006400 })
-        );
-        leaves.position.y = 6;
-        leaves.castShadow = true;
-        group.add(leaves);
-
-        group.position.set(x, 0, z);
-        scene.add(group);
-    };
-
-    // Espalhar 50 árvores aleatoriamente
-    for (let i = 0; i < 50; i++) {
-        const x = Math.random() * 400 - 200; // Entre -200 e 200
-        const z = Math.random() * 400 - 200;
-        // Evita criar árvore no centro onde o jogador nasce
-        if (Math.abs(x) > 10 || Math.abs(z) > 10) {
-            createTree(x, z);
-        }
-    }
+    const wallN = new THREE.Mesh(wallGeo, wallMat); wallN.position.set(0, 10, -arenaSize/2); scene.add(wallN);
+    const wallS = new THREE.Mesh(wallGeo, wallMat); wallS.position.set(0, 10, arenaSize/2); scene.add(wallS);
+    
+    const wallE = new THREE.Mesh(wallGeo, wallMat); wallE.rotation.y = Math.PI / 2; wallE.position.set(arenaSize/2, 10, 0); scene.add(wallE);
+    const wallW = new THREE.Mesh(wallGeo, wallMat); wallW.rotation.y = Math.PI / 2; wallW.position.set(-arenaSize/2, 10, 0); scene.add(wallW);
 }

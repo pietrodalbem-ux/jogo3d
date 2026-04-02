@@ -1,29 +1,29 @@
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { overflow: hidden; background-color: #000; font-family: 'Courier New', Courier, monospace; }
+
+#crosshair {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.8); font-size: 30px; font-weight: bold;
+    pointer-events: none; z-index: 100; user-select: none;
 }
 
-body {
-    overflow: hidden; /* Esconde barras de rolagem */
-    background-color: #000;
-    font-family: 'Courier New', Courier, monospace;
-}
-
-/* Camada de Interface (Textos, Vida, Menus) */
 #ui-layer {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    color: white;
-    z-index: 10; /* Garante que fique por cima do canvas 3D */
-    pointer-events: none; /* Deixa os cliques passarem para o 3D */
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    position: absolute; top: 20px; left: 20px;
+    color: white; z-index: 10; pointer-events: none;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8); transition: opacity 0.5s;
 }
 
-#title {
-    color: #00e5ff;
-    font-size: 2rem;
-    margin-bottom: 5px;
+#game-over {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(50, 0, 0, 0.9); color: red;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    z-index: 200;
 }
+
+#game-over h1 { font-size: 4rem; margin-bottom: 10px; }
+#game-over p { color: white; font-size: 1.5rem; }
+
+.hidden { opacity: 0; pointer-events: none !important; }
+
+#title { color: #8888ff; font-size: 2rem; margin-bottom: 5px; }
