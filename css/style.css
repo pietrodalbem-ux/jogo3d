@@ -1,0 +1,29 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden; /* Esconde barras de rolagem */
+    background-color: #000;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Camada de Interface (Textos, Vida, Menus) */
+#ui-layer {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    z-index: 10; /* Garante que fique por cima do canvas 3D */
+    pointer-events: none; /* Deixa os cliques passarem para o 3D */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+#title {
+    color: #00e5ff;
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
